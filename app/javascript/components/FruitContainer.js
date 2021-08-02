@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import FruitIndex from "./FruitIndex"
 import FruitNew from "./FruitNew"
 import Fruit from "./Fruit"
+import AddNewModal from "./AddNewModal"
 class FruitContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -57,7 +58,8 @@ class FruitContainer extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <FruitNew handleFormSubmit={this.handleFormSubmit} />
+        {/* <FruitNew handleFormSubmit={this.handleFormSubmit} /> */}
+        <AddNewModal />
         <FruitIndex fruits={this.state.fruits} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate} />
       </React.Fragment>
     );
