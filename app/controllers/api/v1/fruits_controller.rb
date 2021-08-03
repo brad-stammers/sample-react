@@ -23,7 +23,7 @@ class Api::V1::FruitsController < ApplicationController
   # POST /fruits or /fruits.json
   def create
     @fruit = Fruit.new(fruit_params)
-
+    # render json: @fruits
     respond_to do |format|
       if @fruit.save
         format.json { render @fruits }
