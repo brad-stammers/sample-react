@@ -5,18 +5,19 @@ class FruitIndex extends React.Component {
   render () {
     var fruits = this.props.fruits.map((fruit) => {
       return(
-        <tr key={fruit.id}>
+        <tr key={fruit.id+fruit.name}>
           <Fruit fruit={fruit} handleDelete={this.props.handleDelete} handleUpdate={this.props.handleUpdate} />
         </tr>
       )
     })
     return (
       <React.Fragment>
-        <table>
+        <table class="ui single line table">
           <thead>
             <tr>
               <th>Name</th>
               <th>Description</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

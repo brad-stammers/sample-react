@@ -8,9 +8,9 @@ import AddFruitModal from "./AddFruitModal"
 class FruitContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { fruits: [] };
-    // this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    // this.addNewFruit = this.addNewFruit.bind(this);
+    this.state = { fruits: [], visible: false, };
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.addNewFruit = this.addNewFruit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.deleteFruit = this.deleteFruit.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -38,22 +38,37 @@ class FruitContainer extends React.Component {
     newFruits = this.state.fruits.filter((fruit) => fruit.id !== id)
     this.setState({ fruits: newFruits })
   }
-  // handleFormSubmit(name, desc) {
-  //   let body = JSON.stringify({fruit: {name: name, desc: desc}})
-  //   fetch('http://localhost:3000/api/v1/fruits', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: body,
-  //   }).then((fruit) => {this.addNewFruit(fruit)})
-  // }
-  // addNewFruit(fruit) {
-  //   this.setState({ fruits: this.state.fruits.concat(fruit)})
-  // }
+  handleFormSubmit(name, desc) {
+    let fruit = {name: name, desc: desc};
+    let body = JSON.stringify(fruit);
+    fetch('http://localhost:3000/api/v1/fruits', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: body,
+    }).then((response) => {return response.json()})
+    .then((fruit) => {this.addNewFruit(fruit)})
+  }
+  addNewFruit(fruit) {
+    this.setState({ fruits: [] });
+    this.loadFruit();
+    this.setState({ visible: false, });
+  }
 
-  componentDidMount() {
+  showModal = () => {
+    this.setState({ visible: true, });
+  };
+  handleCancel = () => {
+    this.setState({ visible: false, });
+  };
+
+  loadFruit() {
     fetch('/api/v1/fruits.json')
       .then((response) => { return response.json()})
       .then((data) => { this.setState({ fruits: data })});
+  }
+
+  componentDidMount() {
+    this.loadFruit();
   }
 
   render () {
@@ -61,7 +76,8 @@ class FruitContainer extends React.Component {
       <React.Fragment>
         {/* <FruitNew handleFormSubmit={this.handleFormSubmit} /> */}
         {/* <AddNewModal /> */}
-        <AddFruitModal fruits={this.state.fruits} />
+        <button onClick={this.showModal} className="ui small primary basic button">Add Fruit</button>
+        <AddFruitModal visible={this.state.visible} handleCancel={this.handleCancel} handleFormSubmit={this.handleFormSubmit} fruits={this.state.fruits} />
         <FruitIndex fruits={this.state.fruits} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate} />
       </React.Fragment>
     );

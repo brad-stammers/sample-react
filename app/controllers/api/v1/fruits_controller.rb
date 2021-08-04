@@ -26,8 +26,11 @@ class Api::V1::FruitsController < ApplicationController
     # render json: @fruits
     respond_to do |format|
       if @fruit.save
-        format.json { render @fruits }
+        # format.html { redirect_to @fruit, notice: "Fruit was successfully created." }
+        # format.json { render :show, status: :created, location: @fruits }
+        format.json { render json: @fruits }
       else
+        # format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @fruit.errors, status: :unprocessable_entity }
       end
     end
@@ -60,6 +63,6 @@ class Api::V1::FruitsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def fruit_params
-      params.require(:fruit).permit(:name, :desc)
+      params.require(:fruit).permit(:id, :name, :desc)
     end
 end
